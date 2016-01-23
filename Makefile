@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003, John T. Criswell
+# Copyright (c) 2003, John T Criswell
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
