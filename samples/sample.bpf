@@ -1,0 +1,66 @@
+#
+# Program: Pooh
+#
+# Description:
+#	This is a sample program for testing the BPF Assembler.
+#
+STRUCT Pooh
+	# Simple loads
+	LDAL
+	LDAI 0x00000000
+
+	# Memory load
+	LDA  Offset
+
+	# Packet loads
+	LDAB TuPoohie
+	LDAH TuPoohie
+	LDAW TuPoohie
+	LDAB MePoohie,X
+	LDAH MePoohie,X
+	LDAW MePoohie,X
+
+	# Stores
+	STA  TuPoohie
+	STX  MePoohie
+
+	# Transfers
+	TXA
+	TAX
+
+	# Branches
+	BGT    myvalue,%Piglet,%Tigger
+	BLT    myvalue,%Piglet,%Tigger
+	BGE    myvalue,%Piglet,%Tigger
+	BLE    myvalue,%Piglet,%Tigger
+	BEQ    myvalue,%Piglet,%Tigger
+	BNE    myvalue,%Piglet,%Tigger
+	BSET   myvalue,%Piglet,%Tigger
+	BNSET  myvalue,%Piglet,%Tigger
+
+	#
+	# Arithmetic
+	#
+	ADD
+	SUB
+	MUL
+	DIV
+	LSH
+	RSH
+	AND
+	ORA
+	NEG
+
+	ADD [(!constant)]
+	SUB [(!constant)]
+	MUL [(!constant)]
+	DIV [(!constant)]
+	LSH [(!constant)]
+	RSH [(!constant)]
+	AND [(!constant)]
+	ORA [(!constant)]
+
+	# Return instructions
+%Piglet RET
+%Tigger RET [-1]
+
