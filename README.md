@@ -22,10 +22,9 @@ Any such dependencies should be minimal.
 
 Where can I get it?
 -------------------
-The BPF Assembler can be downloaded from the following website in the
-"Portfolio" section:
+The BPF Assembler can be downloaded from Github at the following URL:
 
-http://www.bigw.org/~jcriswel
+https://github.com/jtcriswell/bpfa
 
 What is the instruction set?
 -----------------------------
