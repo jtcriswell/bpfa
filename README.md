@@ -1,5 +1,5 @@
 BPF Assembler
-Copyright (c) 2003, John T Criswell
+Copyright (c) 2003, 2016 John T Criswell
 
 ===============================================================================
 

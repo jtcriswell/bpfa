@@ -188,7 +188,7 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 	fprintf (file, "#include <pcap.h>\n\n");
 	fprintf (file, "#ifndef %s_H\n", progname);
 	fprintf (file, "#define %s_H\n\n", progname);
-	fprintf (file, "struct bpf_insn %s_array [] = \n{\n", progname);
+	fprintf (file, "static struct bpf_insn %s_array [] = \n{\n", progname);
 	for (p = inslist; p != NULL; p=p->next)
 	{
 		if (p->statement)
@@ -205,7 +205,7 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 	/*
 	 * Second, create a struct bpf_program which points to the program.
 	 */
-	fprintf (file, "struct bpf_program %s = ", progname);
+	fprintf (file, "static struct bpf_program %s = ", progname);
 	fprintf (file, "{%d, &(%s_array[0])};\n\n", length, progname);
 	fprintf (file, "#endif\n");
 	return 0;
