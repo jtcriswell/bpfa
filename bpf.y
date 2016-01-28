@@ -52,6 +52,8 @@ char * progname = "program";
 struct symbol * create_symbol_table (struct instruction * code);
 int resolve_symbols (struct instruction * program, struct symtable * symtable);
 struct symbol * symlookup (struct symtable * symtable, char * name);
+extern int yylex();
+extern int yyerror(char * message);
 %}
 
 %union
