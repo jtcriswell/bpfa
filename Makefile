@@ -33,13 +33,13 @@
 CFLAGS= -g
 
 # Header files
-HEADERS=bpf.h ins.h symtable.h y.tab.h
+HEADERS=bpf.h ins.h symtable.h bpf.tab.h
 
 # List of source files
-SRC=lex.yy.c y.tab.c bpfa.c
+SRC=lex.yy.c bpf.tab.c bpfa.c
 
 # List of object files
-OBJS=lex.yy.o y.tab.o bpfa.o
+OBJS=lex.yy.o bpf.tab.o bpfa.o
 
 bpfa: $(OBJS)
 	$(CC) $(CFLAGS) -o bpfa $(OBJS)
@@ -47,14 +47,14 @@ bpfa: $(OBJS)
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $<
 
-lex.yy.c: y.tab.h bpf.l
+lex.yy.c: bpf.tab.h bpf.l
 	flex bpf.l
 
-y.tab.c y.tab.h: bpf.y
-	yacc -d bpf.y
+bpf.tab.c bpf.tab.h: bpf.y
+	bison -d bpf.y
 
 clean:
-	rm -f $(OBJS) lex.yy.c y.tab.c y.tab.h
+	rm -f $(OBJS) lex.yy.c bpf.tab.c bpf.tab.h
 
 clobber: clean
 	rm -f bpfa

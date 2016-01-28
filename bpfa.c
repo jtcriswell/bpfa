@@ -35,7 +35,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "y.tab.h"
+#include "bpf.tab.h"
 #include "ins.h"
 #include "symtable.h"
 #include "bpf.h"

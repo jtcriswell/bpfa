@@ -33,7 +33,7 @@
 #include <string.h>
 
 #include "ins.h"
-#include "y.tab.h"
+#include "bpf.tab.h"
 
 int lineno=0;
 %}
