@@ -31,6 +31,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -44,7 +45,10 @@
 struct symtable * create_symbol_table (struct instruction * code);
 int resolve_symbols (struct instruction * program, struct symtable * symtable);
 struct symbol * symlookup (struct symtable * symtable, char * name);
+int genprogram (FILE * file, char * progname, struct instruction * inslist);
+int fprintins (FILE * out, struct instruction * inp);
 
+extern int yyparse ();
 extern struct instruction * inslist;
 extern char * progname;
 
