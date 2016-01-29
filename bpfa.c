@@ -130,7 +130,10 @@ main (int argc, char ** argv)
 	/*
 	 * Next, create the symbol table.
 	 */
-	symtable = create_symbol_table (inslist);
+	if ((symtable = create_symbol_table (inslist)) == NULL)
+	{
+		exit (1);
+	}
 
 	/*
 	 * Resolve all of the labels within the program.
@@ -301,12 +304,32 @@ create_symbol_table (struct instruction * code)
 	{
 		if (p->label != NULL)
 		{
+			/*
+			 * Check to see if this symbol is already in the symbol table.  If it
+			 * is, then there is a duplicate symbol error that we should report to
+			 * the user.
+			 */
+			for (unsigned checkIndex = 0; checkIndex < index; ++checkIndex)
+			{
+				if ((strcmp (p->label, symtable->symbols[checkIndex].symname)) == 0)
+				{
+					fprintf (stderr, "Duplicate symbol %s\n", p->label);
+					return NULL;
+				}
+			}
+
+			/*
+			 * Add the symbol to the symbol table.
+			 */
 			symtable->symbols[index].symname = p->label;
 			symtable->symbols[index].symoffset = offset;
 			index++;
 		}
 	}
 
+	/*
+	 * Return the pointer to the allocated symbol table.
+	 */
 	return symtable;
 }
 
