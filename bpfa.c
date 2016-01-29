@@ -135,12 +135,14 @@ main (int argc, char ** argv)
 	/*
 	 * Resolve all of the labels within the program.
 	 */
-	resolve_symbols (inslist, symtable);
-
-	/*
-	 * Generate the output for this program.
-	 */
-	genprogram (output, progname, inslist);
+	if (resolve_symbols (inslist, symtable))
+	{
+		/*
+		 * Generate the output for this program if all symbols were
+		 * resolved.
+		 */
+		genprogram (output, progname, inslist);
+	}
 
 	return 0;
 }
@@ -323,7 +325,8 @@ create_symbol_table (struct instruction * code)
  *	          symbols are resolved.
  *
  * Return value:
- *	Undefined.
+ *	0 - Not all symbols were resolved.
+ *  1 - All symbols were resolved.
  */
 static int
 resolve_symbols (struct instruction * program, struct symtable * symtable)
@@ -340,6 +343,13 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 	/* Offset of the branch */
 	int offset;
 
+	/* Flags whether all symbols have been resolved */
+	int allResolved = 1;
+
+	/*
+	 * Scan through the entire program and resolve the symbols in each
+	 * instruction.
+	 */
 	for (inp = program; inp != NULL; index++, inp=inp->next)
 	{
 		/*
@@ -363,6 +373,8 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 				fprintf (stderr, "Invalid label %s\n",
 				         inp->operand);
 				fprintins (stderr, inp);
+				allResolved = 0;
+				continue;
 			}
 
 			/*
@@ -389,6 +401,8 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 				fprintf (stderr, "Invalid true branch label %s\n",
 				         inp->true_branch);
 				fprintins (stderr, inp);
+				allResolved = 0;
+				continue;
 			}
 
 			/*
@@ -415,6 +429,8 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 				fprintf (stderr, "Invalid false branch label %s\n",
 				         inp->false_branch);
 				fprintins (stderr, inp);
+				allResolved = 0;
+				continue;
 			}
 
 			/*
@@ -425,7 +441,7 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 		}
 	}
 
-	return 0;
+	return allResolved;
 }
 
 /*
