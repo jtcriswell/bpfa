@@ -171,7 +171,7 @@ yywrap ()
 int
 yyerror ()
 {
-	printf ("Error: Line number %d\n", lineno);
+	fprintf (stderr, "Error: Line number %d\n", lineno);
 	return 0;
 }
 
