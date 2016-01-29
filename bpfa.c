@@ -43,10 +43,10 @@
 
 /* Function Prototypes */
 struct symtable * create_symbol_table (struct instruction * code);
-int resolve_symbols (struct instruction * program, struct symtable * symtable);
-struct symbol * symlookup (struct symtable * symtable, char * name);
-int genprogram (FILE * file, char * progname, struct instruction * inslist);
-int fprintins (FILE * out, struct instruction * inp);
+static int resolve_symbols (struct instruction * p, struct symtable * symtable);
+static struct symbol * symlookup (struct symtable * symtable, char * name);
+static int genprogram (FILE * file, char * pname, struct instruction * inslist);
+static int fprintins (FILE * out, struct instruction * inp);
 
 extern int yyparse ();
 extern struct instruction * inslist;
@@ -164,7 +164,7 @@ main (int argc, char ** argv)
  *	0  = Success
  *	!0 = Error
  */
-int
+static int
 genprogram (FILE * file, char * progname, struct instruction * inslist)
 {
 	/* Pointer for scanning the program */
@@ -325,7 +325,7 @@ create_symbol_table (struct instruction * code)
  * Return value:
  *	Undefined.
  */
-int
+static int
 resolve_symbols (struct instruction * program, struct symtable * symtable)
 {
 	/* Pointer for scanning through the program */
@@ -435,7 +435,7 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
  *	This function finds the specified symbol within the symbol table.
  *
  */
-struct symbol *
+static struct symbol *
 symlookup (struct symtable * symtable, char * name)
 {
 	/* Index variable */
@@ -452,10 +452,9 @@ symlookup (struct symtable * symtable, char * name)
 	return NULL;
 }
 
-int
+static int
 fprintins (FILE * out, struct instruction * inp)
 {
 	fprintf (out, "%s\t%s\t%s\n", inp->label, inp->opcode, inp->operand);
 	return 0;
 }
-
