@@ -47,7 +47,13 @@ bpfa: $(OBJS)
 lex.yy.c: bpf.tab.h bpf.l
 	flex bpf.l
 
-bpf.tab.c bpf.tab.h: bpf.y
+#
+# Make bpf.tab.c depend on bpf.tab.h.  bpf.tab.h will, in turn, depend
+# upon bpf.y.  This will ensure that parallel builds work correctly.
+#
+bpf.tab.c: bpf.tab.h
+
+bpf.tab.h: bpf.y
 	bison -d bpf.y
 
 clean:
