@@ -65,7 +65,7 @@ extern int yyerror(char * message);
 	struct instruction * opcode;
 }
 
-%token <value> Label,XIndex
+%token <value> Label XIndex
 %token <value> Value
 %token <opcode> LDAW LDAH LDAB LDAI LDAL LDA
 %token <opcode> LDX LDXI LDXL LDXIP
@@ -77,7 +77,7 @@ extern int yyerror(char * message);
 %token <opcode> STRUCT
 
 
-%type <opcode> Load,Store,Branch,Alu,Instruction,Statement,StatementList,Program
+%type <opcode> Load Store Branch Alu Instruction Statement StatementList Program
 
 %token Endl;
 
