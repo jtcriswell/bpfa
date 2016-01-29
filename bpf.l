@@ -61,7 +61,7 @@ lda|LDA		{return LDA;}
 ldx|LDX		{return LDX;}
 ldxi|LDXI	{return LDXI;}
 ldxl|LDXL	{return LDXL;}
-ldxip|LDXIP	{return LDXIP;}
+ldxipv4len|LDXIPV4LEN	{return LDXIPV4LEN;}
 
 sta|STA	{return STA;}
 stx|STX	{return STX;}

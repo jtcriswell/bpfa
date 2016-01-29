@@ -68,7 +68,7 @@ LDAH <Value>,X
 LDX   <Value> - Load X Register with word from memory.
 LDXI  <Value> - Load X Register with immediate value.
 LDXL          - Load X Register with packet's length.
-LDXIP         - Load X Register with length of IP header.
+LDXIPV4LEN    - Load X Register with length of IPv4 header.
 
 Stores
 ------

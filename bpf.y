@@ -68,7 +68,7 @@ extern int yyerror();
 %token <value> Label XIndex
 %token <value> Value
 %token <opcode> LDAW LDAH LDAB LDAI LDAL LDA
-%token <opcode> LDX LDXI LDXL LDXIP
+%token <opcode> LDX LDXI LDXL LDXIPV4LEN
 %token <opcode> STA STX
 %token <opcode> ADD SUB MUL DIV AND ORA LSH RSH NEG
 %token <opcode> JMP BGT BGE BLT BLE BEQ BNE BSET BNSET
@@ -111,7 +111,7 @@ Load:		LDA Value		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
 		| LDX Value		{MKINS($$,"BPF_LDX+BPF_W_BPF_MEM",$2);}
 		| LDXI Value		{MKINS($$,"BPF_LDX+BPF_W_BPF_IMM",$2);}
 		| LDXL 			{MKINS($$,"BPF_LDX+BPF_W+BPF_LEN",NULL);}
-		| LDXIP 		{MKINS($$,"BPF_LDX+BPF_B+BPF_MSH",NULL);}
+		| LDXIPV4LEN 		{MKINS($$,"BPF_LDX+BPF_B+BPF_MSH","14");}
 		| TAX 			{MKINS($$,"BPF_MISC+BPF_TAX",NULL);}
 		| TXA 			{MKINS($$,"BPF_MISC+BPF_TXA",NULL);}
 		;
