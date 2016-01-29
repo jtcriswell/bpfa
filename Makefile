@@ -35,9 +35,6 @@ CFLAGS= -g
 # Header files
 HEADERS=bpf.h ins.h symtable.h bpf.tab.h
 
-# List of source files
-SRC=lex.yy.c bpf.tab.c bpfa.c
-
 # List of object files
 OBJS=lex.yy.o bpf.tab.o bpfa.o
 
