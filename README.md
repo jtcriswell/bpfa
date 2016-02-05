@@ -13,12 +13,12 @@ libpcap functions.
 
 What platforms does the BPF Assembler support?
 ----------------------------------------------
-The BPF Assembler has had rudimentary testing on MkLinux on PowerPC, but it
-should compile and run on any UNIX like operating system with little/no
-effort.
+The BPF Assembler has had rudimentary testing on Mac OS X, Linux, and
+(a very long time ago) on MkLinux on PowerPC.  It should compile and run
+on any UNIX like operating system with little/no effort.
 
-Note that there might be dependencies on features of Flex, Bison, and GNU Make.
-Any such dependencies should be minimal.
+Note that there are dependencies on Flex, Bison, and Make.  Any such
+dependencies should be minimal.
 
 Where can I get it?
 -------------------
