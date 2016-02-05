@@ -3,3 +3,4 @@ STRUCT ArpFilter
 	BEQ 0x0806, %accept, %reject
 %accept	RET [(unsigned int)(-1)]
 %reject	RET 0
+END

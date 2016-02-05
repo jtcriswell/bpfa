@@ -36,6 +36,10 @@ A program starts with the following special line:
 
 	STRUCT <name>
 
+... and ends with the following special line:
+
+	END
+
 The value <name> is used to define the name of the generated structure in the
 generated C header file.  For example, the line:
 

@@ -51,6 +51,7 @@ int lineno=0;
 [,]		{;}
 
 struct|STRUCT	{return STRUCT;}
+end|END	{return ENDSTRUCT;}
 ldaw|LDAW	{return LDAW;}
 ldah|LDAH	{return LDAH;}
 ldab|LDAB	{return LDAB;}

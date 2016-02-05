@@ -75,14 +75,15 @@ extern int yyerror();
 %token <opcode> RET
 %token <opcode> TAX TXA
 %token <opcode> STRUCT
-
+%token <opcode> ENDSTRUCT
 
 %type <opcode> Load Store Branch Alu Instruction Statement StatementList Program
 
 %token Endl;
 
 %%
-Program:	STRUCT Value Endl StatementList	{$$ = $4; progname = $2;}
+Program:	STRUCT Value Endl StatementList	ENDSTRUCT {$$ = $4; progname = $2;}
+		| STRUCT Value Endl StatementList	ENDSTRUCT Endl {$$ = $4; progname = $2;}
 		;
 
 StatementList:	Statement			{inslist = $$ = $1;}
