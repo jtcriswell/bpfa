@@ -53,7 +53,7 @@ struct symbol
 	unsigned char type;
 
 	/* The index of the symbol into the BPF program */
-	int symoffset;
+	unsigned int symoffset;
 };
 
 /*
@@ -67,7 +67,7 @@ struct symbol
 struct symtable
 {
 	/* The number of elements in the symbol table */
-	int count;
+	unsigned int count;
 
 	/* A variable sized array of symbols */
 	struct symbol * symbols;

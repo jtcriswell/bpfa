@@ -261,16 +261,16 @@ struct symtable *
 create_symbol_table (struct instruction * code)
 {
 	/* Index variable */
-	int index = 0;
+	unsigned int index = 0;
 
 	/* The offset of a symbol from the beginng of the program */
-	int offset;
+	unsigned int offset;
 
 	/* Next memory location available in the memory */
 	unsigned int nextMemory = 0;
 
 	/* The number of labels in the program */
-	int labelcount = 0;
+	unsigned int labelcount = 0;
 
 	/* A pointer to scan over the program */
 	struct instruction * p;
@@ -421,16 +421,16 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 	struct instruction * inp;
 
 	/* Index variable */
-	int index = 1;
+	unsigned int index = 1;
 
 	/* Pointer to the symbol */
 	struct symbol * sym;
 
 	/* Offset of the branch */
-	int offset;
+	unsigned int offset;
 
 	/* Flags whether all symbols have been resolved */
-	int allResolved = 1;
+	unsigned int allResolved = 1;
 
 	/*
 	 * Scan through the entire program and resolve the symbols in each
@@ -546,7 +546,7 @@ static struct symbol *
 symlookup (struct symtable * symtable, char * name)
 {
 	/* Index variable */
-	int index;
+	unsigned int index;
 
 	for (index = 0; index < symtable->count; index++)
 	{
