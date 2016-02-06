@@ -31,7 +31,17 @@ STRUCT Pooh
 	TXA
 	TAX
 
-	# Branches
+  # Branches with only true targets
+	BGT    myvalue,%Piglet
+	BLT    myvalue,%Piglet
+	BGE    myvalue,%Piglet
+	BLE    myvalue,%Piglet
+	BEQ    myvalue,%Piglet
+	BNE    myvalue,%Piglet
+	BSET   myvalue,%Piglet
+	BNSET  myvalue,%Piglet
+
+	# Branches with true and false branches
 	JMP    %Piglet
 	BGT    myvalue,%Piglet,%Tigger
 	BLT    myvalue,%Piglet,%Tigger

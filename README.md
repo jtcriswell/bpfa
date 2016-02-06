@@ -130,17 +130,18 @@ Branches
 --------
 All branches are of the form:
 
-<optional label> <opcode> <Value> <true label> <false label>
+[optional label] <opcode> <Value> <true label> [false label]
 
 or
 
-<optional label> <opcode> <true label> <false label>
+[optional label] <opcode> <true label> [false label]
 
 The first form compares the Accumulator against a constant.  The second form
 compares the Accumulator against the X register.
 
 If the comparison is true, control will flow to the <true label>.  Otherwise,
-it will transfer to <false label>.
+it will transfer to the <false label> if it is specified or to the next
+instruction if no <false label> is specified.
 
 Note that some of these operations are actually pseudo-ops; the BPF assembler
 will arrange the true/false destinations and pick an actual BPF opcode to
