@@ -38,7 +38,16 @@
 extern C {
 #endif
 
-/* Constants denoting the different kinds of instructions */
+/*
+ * Enumerated Type: instType
+ *
+ * Description:
+ *  Constants denoting the different kinds of instructions:
+ *
+ * Options:
+ *  statement - The instruction is a regular instruction.
+ *  branch    - The instruction is a conditional branch instruction.
+ */
 enum instType {statement, branch};
 
 /*
@@ -134,17 +143,16 @@ mkbr (char * op, char * value, char * true_branch, char * false_branch)
 	struct instruction * p;
 
 	/*
-	 * Allocate a new instruction.
+	 * Allocate a new instruction and initialize the opcode and operand
+	 * fields.
 	 */
-	p = malloc (sizeof (struct instruction));
+	p = mkins (op, value);
 	if (p)
 	{
-		p = malloc (sizeof (struct instruction));
+		/*
+		 * Initialize (or reset) the conditional branch fields.
+		 */
 		p->instType = branch;
-		p->opcode = op;
-		p->operand = value;
-		p->next = NULL;
-		p->label = NULL;
 		p->true_branch = true_branch;
 		p->false_branch = false_branch;
 	}
