@@ -29,8 +29,9 @@ https://github.com/jtcriswell/bpfa
 What is the instruction set?
 -----------------------------
 Instructions to the assembler begin with an optional label, an opcode, and zero
-or more operands.  Labels begin with a percent sign (%).  Comments begin with a
-pound sign (#) and go until the end of the line.
+or more operands.  Labels begin with a percent sign (%) and either define the
+location of an instruction or a location in the scratch memory.  Comments begin
+with a pound sign (#) and run until the end of the line.
 
 A program starts with the following special line:
 
@@ -56,9 +57,20 @@ The instruction set details can be understood by examining bpf.y, and it is
 generally assumed that the user has read the bpf(4) man page.  However, the
 following overview should make things a little easier to understand:
 
+Memory
+------
+The keyword VAR create a label that denotes a location within the scratch
+memory.  The following directive reserves a memory location with the label
+%port:
+
+	VAR %port
+
+Instructions that take memory locations as operand (LDA, STA, LDX, STX)
+take memory location labels as arguments.
+
 Loads
 -----
-LDA  <Value> - Load Accumulator with word from memory.
+LDA  <Label> - Load Accumulator with word from memory.
 LDAI <Value> - Load Accumulator with immediate value.
 LDAB <Value> - Load Accumulator with byte from packet.
 LDAH <Value> - Load Accumulator with halfword from packet.
@@ -69,15 +81,15 @@ LDAH, LDAH, and LDAW may also be used with X register indexing:
 
 LDAH <Value>,X
 
-LDX   <Value> - Load X Register with word from memory.
+LDX   <Label> - Load X Register with word from memory.
 LDXI  <Value> - Load X Register with immediate value.
 LDXL          - Load X Register with packet's length.
 LDXIPV4LEN    - Load X Register with length of IPv4 header.
 
 Stores
 ------
-STA <Value> - Store Accumulator word in memory.
-STX <Value> - Store X Register word in memory.
+STA <Label> - Store Accumulator word in memory.
+STX <Label> - Store X Register word in memory.
 
 Transfers
 ---------
