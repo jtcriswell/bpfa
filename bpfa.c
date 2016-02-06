@@ -95,6 +95,7 @@ main (int argc, char ** argv)
 				printf ("BPF Assembler Version %s\n", VERSION);
 				printf ("%s\n", COPYRIGHT);
 				exit (0);
+
 			case 'o':
 				output = fopen (optarg, "w+");
 				if (output == NULL)
@@ -102,6 +103,15 @@ main (int argc, char ** argv)
 					fprintf (stderr, "Failed to open %s for writing\n", optarg);
 					exit (1);
 				}
+				break;
+
+			case '?':
+        fprintf (stderr, "Usage:\n");
+        fprintf (stderr, "\t%s [options] <input>\n\n", argv[0]);
+        fprintf (stderr, "\tOptions:\n\n");
+        fprintf (stderr, "\t-V: Print version and exit\n");
+        fprintf (stderr, "\t-o <file>: Write output to file\n");
+        exit (1);
 				break;
 		}
 	}
