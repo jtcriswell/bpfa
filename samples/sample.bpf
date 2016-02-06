@@ -32,6 +32,7 @@ STRUCT Pooh
 	TAX
 
 	# Branches
+	JMP    %Piglet
 	BGT    myvalue,%Piglet,%Tigger
 	BLT    myvalue,%Piglet,%Tigger
 	BGE    myvalue,%Piglet,%Tigger
