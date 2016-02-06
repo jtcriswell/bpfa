@@ -52,6 +52,7 @@ int lineno=0;
 
 struct|STRUCT	{return STRUCT;}
 end|END	{return ENDSTRUCT;}
+var|VAR	{return VAR;}
 ldaw|LDAW	{return LDAW;}
 ldah|LDAH	{return LDAH;}
 ldab|LDAB	{return LDAB;}

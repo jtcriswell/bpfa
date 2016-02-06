@@ -5,12 +5,15 @@
 #	This is a sample program for testing the BPF Assembler.
 #
 STRUCT Pooh
+  VAR %TuPoohie
+  VAR %MePoohie
+
 	# Simple loads
 	LDAL
 	LDAI 0x00000000
 
 	# Memory load
-	LDA  Offset
+	LDA  %TuPoohie
 
 	# Packet loads
 	LDAB TuPoohie
@@ -21,8 +24,8 @@ STRUCT Pooh
 	LDAW MePoohie,X
 
 	# Stores
-	STA  TuPoohie
-	STX  MePoohie
+	STA  %TuPoohie
+	STX  %MePoohie
 
 	# Transfers
 	TXA

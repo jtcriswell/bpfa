@@ -32,6 +32,10 @@
 #ifndef _SYMTABLE_H
 #define _SYMTABLE_H
 
+/* Symbol types */
+static const unsigned char symInst   = 0x01;
+static const unsigned char symMemory = 0x02;
+
 /*
  * Structure: symbol
  *
@@ -44,6 +48,9 @@ struct symbol
 {
 	/* The name of the symbol */
 	char * symname;
+
+	/* The type of the symbol */
+	unsigned char type;
 
 	/* The index of the symbol into the BPF program */
 	int symoffset;

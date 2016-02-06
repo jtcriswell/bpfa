@@ -1,4 +1,5 @@
 STRUCT ArpFilter
+  VAR %data
 	LDAH 12
 	BEQ 0x0806, %accept, %reject
 %accept	RET [(unsigned int)(-1)]

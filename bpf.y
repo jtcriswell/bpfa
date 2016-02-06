@@ -76,6 +76,7 @@ extern int yyerror();
 %token <opcode> TAX TXA
 %token <opcode> STRUCT
 %token <opcode> ENDSTRUCT
+%token <opcode> VAR
 
 %type <opcode> Load Store Branch Alu Instruction Statement StatementList Program
 
@@ -92,6 +93,7 @@ StatementList:	Statement			{inslist = $$ = $1;}
 
 Statement:	Instruction Endl		{$$ = $1;}
 		| Label Instruction Endl	{$$ = $2; $$->label = $1;}
+		| VAR Label Endl	{MKINS($$,"VAR",$2);}
 		;
 
 Instruction:	Load		{$$ = $1;}
@@ -100,7 +102,7 @@ Instruction:	Load		{$$ = $1;}
 		| Alu		{$$ = $1;}
 		;
 
-Load:		LDA Value		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
+Load:		LDA Label		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
 		| LDAW Value		{MKINS($$,"BPF_LD+BPF_W+BPF_ABS",$2);}
 		| LDAH Value		{MKINS($$,"BPF_LD+BPF_H+BPF_ABS",$2);}
 		| LDAB Value		{MKINS($$,"BPF_LD+BPF_B+BPF_ABS",$2);}
@@ -109,7 +111,7 @@ Load:		LDA Value		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
 		| LDAB Value XIndex	{MKINS($$,"BPF_LD+BPF_B+BPF_IND",$2);}
 		| LDAI Value		{MKINS($$,"BPF_LD+BPF_IMM",$2);}
 		| LDAL			{MKINS($$,"BPF_LD+BPF_W+BPF_LEN",NULL);}
-		| LDX Value		{MKINS($$,"BPF_LDX+BPF_W_BPF_MEM",$2);}
+		| LDX Label		{MKINS($$,"BPF_LDX+BPF_W_BPF_MEM",$2);}
 		| LDXI Value		{MKINS($$,"BPF_LDX+BPF_W_BPF_IMM",$2);}
 		| LDXL 			{MKINS($$,"BPF_LDX+BPF_W+BPF_LEN",NULL);}
 		| LDXIPV4LEN 		{MKINS($$,"BPF_LDX+BPF_B+BPF_MSH","14");}
@@ -117,8 +119,8 @@ Load:		LDA Value		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
 		| TXA 			{MKINS($$,"BPF_MISC+BPF_TXA",NULL);}
 		;
 
-Store:		STA Value		{MKINS($$,"BPF_ST",$2);}
-		| STX Value		{MKINS($$,"BPF_STX",$2);}
+Store:		STA Label		{MKINS($$,"BPF_ST",$2);}
+		| STX Label		{MKINS($$,"BPF_STX",$2);}
 		;
 
 Branch:		JMP Label		{MKINS($$,"BPF_JMP+BPF_JA",$2);}

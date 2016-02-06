@@ -183,7 +183,11 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 	 */
 	for (p = inslist; p != NULL; p=p->next)
 	{
-		length++;
+		/*
+		 * Do not count variables as statements.
+		 */
+		if ((strcmp (p->opcode, "VAR")))
+			length++;
 	}
 
 	/*
@@ -198,8 +202,23 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 	fprintf (file, "#ifndef %s_H\n", progname);
 	fprintf (file, "#define %s_H\n\n", progname);
 	fprintf (file, "static struct bpf_insn %s_array [] = \n{\n", progname);
+
+	/*
+	 * Second, create the array elements for each BPF instruction.
+	 */
 	for (p = inslist; p != NULL; p=p->next)
 	{
+    /*
+     * Do not generate instructions for memory variable declarations.
+     */
+    if ((strcmp (p->opcode, "VAR")) == 0)
+    {
+      continue;
+    }
+
+    /*
+     * Generate an array element for this one instruction.
+     */
 		if (p->statement)
 		{
 			fprintf (file, "\tBPF_STMT(%s, %s),\n", p->opcode, (p->operand ? p->operand : "0"));
@@ -212,7 +231,7 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 	fprintf (file, "};\n\n");
 
 	/*
-	 * Second, create a struct bpf_program which points to the program.
+	 * Third, create a struct bpf_program which points to the program.
 	 */
 	fprintf (file, "static struct bpf_program %s = ", progname);
 	fprintf (file, "{%d, &(%s_array[0])};\n\n", length, progname);
@@ -242,10 +261,13 @@ struct symtable *
 create_symbol_table (struct instruction * code)
 {
 	/* Index variable */
-	int index;
+	int index = 0;
 
 	/* The offset of a symbol from the beginng of the program */
 	int offset;
+
+	/* Next memory location available in the memory */
+	unsigned int nextMemory = 0;
 
 	/* The number of labels in the program */
 	int labelcount = 0;
@@ -268,18 +290,21 @@ create_symbol_table (struct instruction * code)
 	symtable->symbols = NULL;
 
 	/*
-	 * Determine the number of instructions with labels in this program.
+	 * Determine the number of symbols created by this BPF program.
 	 */
 	for (p=inslist; p != NULL; p=p->next)
 	{
-		if (p->label != NULL)
+    /*
+     * A symbol is either a label or a newly declared variable.
+     */
+		if ((p->label != NULL) || ((strcmp (p->opcode, "VAR")) == 0))
 		{
 			labelcount++;
 		}
 	}
 
 	/*
-	 * If there are no symbols, return.
+	 * If there are no symbols, return an empty symbol table.
 	 */
 	if (!labelcount)
 	{
@@ -300,8 +325,12 @@ create_symbol_table (struct instruction * code)
 	 * Scan through the program again and grab each label and put it in
 	 * the symbol table.
 	 */
-	for (offset=0, index=0, p=inslist; p != NULL; offset++, p=p->next)
+	for (offset=0, p=inslist; p != NULL; offset++, p=p->next)
 	{
+    /*
+     * If this instruction has a label, then add that label to the symbol
+     * table.
+     */
 		if (p->label != NULL)
 		{
 			/*
@@ -322,7 +351,41 @@ create_symbol_table (struct instruction * code)
 			 * Add the symbol to the symbol table.
 			 */
 			symtable->symbols[index].symname = p->label;
+			symtable->symbols[index].type = symInst;
 			symtable->symbols[index].symoffset = offset;
+
+			/*
+			 * Advance the index to the next available symbol in the array.
+			 */
+			index++;
+		}
+
+		/*
+     * If this instruction declares a label for a memory location, create
+     * a memory label for the location.
+     */
+		if ((strcmp (p->opcode, "VAR")) == 0)
+		{
+			/*
+			 * Check to see if this symbol is already in the symbol table.  If it
+			 * is, then there is a duplicate symbol error that we should report to
+			 * the user.
+			 */
+			for (unsigned checkIndex = 0; checkIndex < index; ++checkIndex)
+			{
+				if ((strcmp (p->operand, symtable->symbols[checkIndex].symname)) == 0)
+				{
+					fprintf (stderr, "Duplicate symbol %s\n", p->operand);
+					return NULL;
+				}
+			}
+
+			/*
+			 * Add the symbol to the symbol table.
+			 */
+			symtable->symbols[index].symname   = p->operand;
+			symtable->symbols[index].type      = symMemory;
+			symtable->symbols[index].symoffset = (nextMemory++);
 			index++;
 		}
 	}
@@ -381,6 +444,7 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 		 */
 		if ((inp->operand == NULL) ||
 		    (!strlen (inp->operand)) ||
+        ((strcmp (inp->opcode, "VAR")) == 0) ||
 		    (inp->operand[0] != '%'))
 		{
 			;
@@ -402,9 +466,13 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 
 			/*
 			 * Determine the distance to be covered and place it
-			 * into the instruction.
+			 * into the instruction if it is a label.  Otherwise,
+       * use the memory location within the symbol.
 			 */
-			sprintf (inp->operand,"%d",sym->symoffset - index);
+      if (sym->type == symInst)
+        sprintf (inp->operand,"%d",sym->symoffset - index);
+      else
+        sprintf (inp->operand,"%d",sym->symoffset);
 		}
 
 		if ((inp->true_branch == NULL) ||
