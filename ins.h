@@ -38,6 +38,9 @@
 extern C {
 #endif
 
+/* Constants denoting the different kinds of instructions */
+enum instType {statement, branch};
+
 /*
  * Structure: Instruction
  *
@@ -48,8 +51,8 @@ extern C {
  */
 struct instruction
 {
-	/* Flags whether the instruction is a branch or statement */
-	unsigned char statement;
+	/* The type of instruction  */
+	enum instType instType;
 
 	/* A pointer to the label */
 	char * label;
@@ -97,7 +100,7 @@ mkins (char * op, char * value)
 	p = malloc (sizeof (struct instruction));
 	if (p)
 	{
-		p->statement = (1);
+		p->instType = statement;
 		p->opcode = op;
 		p->operand = value;
 		p->next = NULL;
@@ -137,7 +140,7 @@ mkbr (char * op, char * value, char * true_branch, char * false_branch)
 	if (p)
 	{
 		p = malloc (sizeof (struct instruction));
-		p->statement = 0;
+		p->instType = branch;
 		p->opcode = op;
 		p->operand = value;
 		p->next = NULL;

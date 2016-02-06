@@ -229,13 +229,17 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
     /*
      * Generate an array element for this one instruction.
      */
-		if (p->statement)
-		{
-			fprintf (file, "\tBPF_STMT(%s, %s),\n", p->opcode, (p->operand ? p->operand : "0"));
-		}
-		else
-		{
-			fprintf (file, "\tBPF_JUMP(%s, %s, %s, %s),\n", p->opcode, p->operand, p->true_branch, p->false_branch);
+    switch (p->instType)
+    {
+      case statement:
+				fprintf (file, "\tBPF_STMT(%s, %s),\n", p->opcode,
+				         (p->operand ? p->operand : "0"));
+				break;
+
+      case branch:
+				fprintf (file, "\tBPF_JUMP(%s, %s, %s, %s),\n", p->opcode, p->operand,
+				         p->true_branch, p->false_branch);
+				break;
 		}
 	}
 	fprintf (file, "};\n\n");
