@@ -552,6 +552,18 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 			}
 
 			/*
+			 * Ensure that the symbol refers to an instruction label.
+			 */
+      if (sym->type == symMemory)
+			{
+				fprintf (stderr,
+				         "Error: Conditional branch using memory label %s\n",
+								 inp->true_branch);
+				allResolved = 0;
+				continue;
+			}
+
+			/*
 			 * Determine the distance to be covered and place it
 			 * into the instruction.
 			 */
@@ -572,6 +584,18 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 				fprintf (stderr, "Invalid false branch label %s\n",
 				         inp->false_branch);
 				fprintins (stderr, inp);
+				allResolved = 0;
+				continue;
+			}
+
+			/*
+			 * Ensure that the symbol refers to an instruction label.
+			 */
+      if (sym->type == symMemory)
+			{
+				fprintf (stderr,
+				         "Error: Conditional branch using memory label %s\n",
+								 inp->false_branch);
 				allResolved = 0;
 				continue;
 			}
