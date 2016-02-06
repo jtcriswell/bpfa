@@ -37,7 +37,7 @@ extern C {
 #endif
 
 /* Macros defining version number, copyrights, etc */
-#define VERSION "0.9"
+#define VERSION "0.9.1"
 #define COPYRIGHT "Copyright (c) 2003, 2016 John T Criswell"
 
 #ifdef _cplusplus
