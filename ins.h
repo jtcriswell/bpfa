@@ -71,41 +71,82 @@ struct instruction
 };
 
 /*
- * Macro: MKINS()
+ * Function: mkins()
  *
  * Description:
- *	This macro allocates and initializes an instruction structure.  It is
+ *	This function allocates and initializes an instruction structure.  It is
  *	mainly used to save screen real-estate in the Yacc source code.
+ *
+ * Inputs:
+ *  op    - A pointer to a string representing the opcode of the instruction.
+ *  value - A pointer to a string representing the operand of the instruction.
+ *
+ * Return value:
+ *  NULL - No new instruction could be allocated.
+ *  Otherwise, a pointer to the newly allocated instruction is returned.
  */
-#define MKINS(node,op,value) \
-{\
-	(node) = malloc (sizeof (struct instruction)); \
-	(node)->statement = (1); \
-	(node)->opcode = (op); \
-	(node)->operand = (value); \
-	(node)->next = NULL; \
-	(node)->label = NULL; \
-	(node)->true_branch = (node)->false_branch = NULL; \
+static inline struct instruction *
+mkins (char * op, char * value)
+{
+	/* Pointer to the new instruction */
+	struct instruction * p;
+
+	/*
+	 * Allocate a new instruction.
+	 */
+	p = malloc (sizeof (struct instruction));
+	if (p)
+	{
+		p->statement = (1);
+		p->opcode = op;
+		p->operand = value;
+		p->next = NULL;
+		p->label = NULL;
+		p->true_branch = p->false_branch = NULL;
+	}
+
+	return p;
 }
 
 /*
- * Macro: MKBR()
+ * Function: mkbr()
  *
  * Description:
- *	This macro creates a branch instruction.  It takes the two locations
+ *	This function creates a branch instruction.  It takes the two locations
  *	for branching and the operand and generates the proper branch
  *	instruction.
+ *
+ * Inputs:
+ *  op    - A pointer to a string representing the opcode of the instruction.
+ *  value - A pointer to a string representing the operand of the instruction.
+ *
+ * Return value:
+ *  NULL - No new instruction could be allocated.
+ *  Otherwise, a pointer to the newly allocated instruction is returned.
  */
-#define MKBR(node,op,value,true_line,false_line) \
-{\
-	(node) = malloc (sizeof (struct instruction)); \
-	(node)->statement = (0); \
-	(node)->opcode = (op); \
-	(node)->operand = (value); \
-	(node)->next = NULL; \
-	(node)->label = NULL; \
-	(node)->true_branch = (true_line); \
-	(node)->false_branch = (false_line); \
+static inline struct instruction *
+mkbr (char * op, char * value, char * true_branch, char * false_branch)
+{
+	/* Pointer to the new instruction */
+	struct instruction * p;
+
+	/*
+	 * Allocate a new instruction.
+	 */
+	p = malloc (sizeof (struct instruction));
+	if (p)
+	{
+		p = malloc (sizeof (struct instruction));
+		p->statement = 0;
+		p->opcode = op;
+		p->operand = value;
+		p->next = NULL;
+		p->label = NULL;
+		p->true_branch = true_branch;
+		p->false_branch = false_branch;
+	}
+
+	return p;
 }
 
 #ifdef _cplusplus

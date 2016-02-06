@@ -93,7 +93,7 @@ StatementList:	Statement			{inslist = $$ = $1;}
 
 Statement:	Instruction Endl		{$$ = $1;}
 		| Label Instruction Endl	{$$ = $2; $$->label = $1;}
-		| VAR Label Endl	{MKINS($$,"VAR",$2);}
+		| VAR Label Endl	{$$=mkins("VAR",$2);}
 		;
 
 Instruction:	Load		{$$ = $1;}
@@ -102,65 +102,65 @@ Instruction:	Load		{$$ = $1;}
 		| Alu		{$$ = $1;}
 		;
 
-Load:		LDA Label		{MKINS($$,"BPF_LD+BPF_MEM",$2);}
-		| LDAW Value		{MKINS($$,"BPF_LD+BPF_W+BPF_ABS",$2);}
-		| LDAH Value		{MKINS($$,"BPF_LD+BPF_H+BPF_ABS",$2);}
-		| LDAB Value		{MKINS($$,"BPF_LD+BPF_B+BPF_ABS",$2);}
-		| LDAW Value XIndex	{MKINS($$,"BPF_LD+BPF_W+BPF_IND",$2);}
-		| LDAH Value XIndex	{MKINS($$,"BPF_LD+BPF_H+BPF_IND",$2);}
-		| LDAB Value XIndex	{MKINS($$,"BPF_LD+BPF_B+BPF_IND",$2);}
-		| LDAI Value		{MKINS($$,"BPF_LD+BPF_IMM",$2);}
-		| LDAL			{MKINS($$,"BPF_LD+BPF_W+BPF_LEN",NULL);}
-		| LDX Label		{MKINS($$,"BPF_LDX+BPF_W_BPF_MEM",$2);}
-		| LDXI Value		{MKINS($$,"BPF_LDX+BPF_W_BPF_IMM",$2);}
-		| LDXL 			{MKINS($$,"BPF_LDX+BPF_W+BPF_LEN",NULL);}
-		| LDXIPV4LEN 		{MKINS($$,"BPF_LDX+BPF_B+BPF_MSH","14");}
-		| TAX 			{MKINS($$,"BPF_MISC+BPF_TAX",NULL);}
-		| TXA 			{MKINS($$,"BPF_MISC+BPF_TXA",NULL);}
+Load:		LDA Label		{$$=mkins("BPF_LD+BPF_MEM",$2);}
+		| LDAW Value		{$$=mkins("BPF_LD+BPF_W+BPF_ABS",$2);}
+		| LDAH Value		{$$=mkins("BPF_LD+BPF_H+BPF_ABS",$2);}
+		| LDAB Value		{$$=mkins("BPF_LD+BPF_B+BPF_ABS",$2);}
+		| LDAW Value XIndex	{$$=mkins("BPF_LD+BPF_W+BPF_IND",$2);}
+		| LDAH Value XIndex	{$$=mkins("BPF_LD+BPF_H+BPF_IND",$2);}
+		| LDAB Value XIndex	{$$=mkins("BPF_LD+BPF_B+BPF_IND",$2);}
+		| LDAI Value		{$$=mkins("BPF_LD+BPF_IMM",$2);}
+		| LDAL			{$$=mkins("BPF_LD+BPF_W+BPF_LEN",NULL);}
+		| LDX Label		{$$=mkins("BPF_LDX+BPF_W_BPF_MEM",$2);}
+		| LDXI Value		{$$=mkins("BPF_LDX+BPF_W_BPF_IMM",$2);}
+		| LDXL 			{$$=mkins("BPF_LDX+BPF_W+BPF_LEN",NULL);}
+		| LDXIPV4LEN 		{$$=mkins("BPF_LDX+BPF_B+BPF_MSH","14");}
+		| TAX 			{$$=mkins("BPF_MISC+BPF_TAX",NULL);}
+		| TXA 			{$$=mkins("BPF_MISC+BPF_TXA",NULL);}
 		;
 
-Store:		STA Label		{MKINS($$,"BPF_ST",$2);}
-		| STX Label		{MKINS($$,"BPF_STX",$2);}
+Store:		STA Label		{$$=mkins("BPF_ST",$2);}
+		| STX Label		{$$=mkins("BPF_STX",$2);}
 		;
 
-Branch:		JMP Label		{MKINS($$,"BPF_JMP+BPF_JA",$2);}
-		| BGT Value Label Label	{MKBR($$,"BPF_JMP+BPF_JGT+BPF_K",$2, $3, $4);}
-		| BGE Value Label Label	{MKBR($$,"BPF_JMP+BPF_JGE+BPF_K",$2, $3, $4);}
-		| BLT Value Label Label	{MKBR($$,"BPF_JMP+BPF_JGE+BPF_K",$2, $4, $3);}
-		| BLE Value Label Label	{MKBR($$,"BPF_JMP+BPF_JGT+BPF_K",$2, $4, $3);}
-		| BEQ Value Label Label	{MKBR($$,"BPF_JMP+BPF_JEQ+BPF_K",$2, $3, $4);}
-		| BNE Value Label Label	{MKBR($$,"BPF_JMP+BPF_JEQ+BPF_K",$2, $4, $3);}
-		| BSET Value Label Label	{MKBR($$,"BPF_JMP+BPF_JSET+BPF_K",$2, $3, $4);}
-		| BNSET Value Label Label	{MKBR($$,"BPF_JMP+BPF_JSET+BPF_K",$2, $4, $3);}
-		| BGT Label Label	{MKBR($$,"BPF_JMP+BPF_JGT+BPF_X",0, $2, $3);}
-		| BGE Label Label	{MKBR($$,"BPF_JMP+BPF_JGE+BPF_X",0, $2, $3);}
-		| BLT Label Label	{MKBR($$,"BPF_JMP+BPF_JGE+BPF_X",0, $3, $2);}
-		| BLE Label Label	{MKBR($$,"BPF_JMP+BPF_JGT+BPF_X",0, $3, $2);}
-		| BEQ Label Label	{MKBR($$,"BPF_JMP+BPF_JEQ+BPF_X",0, $2, $3);}
-		| BNE Label Label	{MKBR($$,"BPF_JMP+BPF_JEQ+BPF_X",0, $3, $2);}
-		| BSET Label Label	{MKBR($$,"BPF_JMP+BPF_JSET+BPF_X",0, $2, $3);}
-		| BNSET Label Label	{MKBR($$,"BPF_JMP+BPF_JSET+BPF_X",0, $3, $2);}
-		| RET Value		{MKINS($$,"BPF_RET+BPF_K",$2);}
-		| RET 			{MKINS($$,"BPF_RET+BPF_A",NULL);}
+Branch:		JMP Label		{$$=mkins("BPF_JMP+BPF_JA",$2);}
+		| BGT Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGT+BPF_K",$2, $3, $4);}
+		| BGE Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_K",$2, $3, $4);}
+		| BLT Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_K",$2, $4, $3);}
+		| BLE Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGT+BPF_K",$2, $4, $3);}
+		| BEQ Value Label Label	{$$=mkbr("BPF_JMP+BPF_JEQ+BPF_K",$2, $3, $4);}
+		| BNE Value Label Label	{$$=mkbr("BPF_JMP+BPF_JEQ+BPF_K",$2, $4, $3);}
+		| BSET Value Label Label	{$$=mkbr("BPF_JMP+BPF_JSET+BPF_K",$2, $3, $4);}
+		| BNSET Value Label Label	{$$=mkbr("BPF_JMP+BPF_JSET+BPF_K",$2, $4, $3);}
+		| BGT Label Label	{$$=mkbr("BPF_JMP+BPF_JGT+BPF_X",0, $2, $3);}
+		| BGE Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_X",0, $2, $3);}
+		| BLT Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_X",0, $3, $2);}
+		| BLE Label Label	{$$=mkbr("BPF_JMP+BPF_JGT+BPF_X",0, $3, $2);}
+		| BEQ Label Label	{$$=mkbr("BPF_JMP+BPF_JEQ+BPF_X",0, $2, $3);}
+		| BNE Label Label	{$$=mkbr("BPF_JMP+BPF_JEQ+BPF_X",0, $3, $2);}
+		| BSET Label Label	{$$=mkbr("BPF_JMP+BPF_JSET+BPF_X",0, $2, $3);}
+		| BNSET Label Label	{$$=mkbr("BPF_JMP+BPF_JSET+BPF_X",0, $3, $2);}
+		| RET Value		{$$=mkins("BPF_RET+BPF_K",$2);}
+		| RET 			{$$=mkins("BPF_RET+BPF_A",NULL);}
 		;
 
-Alu:		ADD		{MKINS($$,"BPF_ALU+BPF_ADD+BPF_X",NULL);}
-		| SUB		{MKINS($$,"BPF_ALU+BPF_SUB+BPF_X",NULL);}
-		| MUL		{MKINS($$,"BPF_ALU+BPF_MUL+BPF_X",NULL);}
-		| DIV		{MKINS($$,"BPF_ALU+BPF_DIV+BPF_X",NULL);}
-		| AND		{MKINS($$,"BPF_ALU+BPF_AND+BPF_X",NULL);}
-		| ORA		{MKINS($$,"BPF_ALU+BPF_ORA+BPF_X",NULL);}
-		| LSH		{MKINS($$,"BPF_ALU+BPF_LSH+BPF_X",NULL);}
-		| RSH		{MKINS($$,"BPF_ALU+BPF_RSH+BPF_X",NULL);}
-		| NEG		{MKINS($$,"BPF_ALU+BPF_NEG",NULL);}
-		| ADD Value	{MKINS($$,"BPF_ALU+BPF_ADD+BPF_K",$2);}
-		| SUB Value	{MKINS($$,"BPF_ALU+BPF_SUB+BPF_K",$2);}
-		| MUL Value	{MKINS($$,"BPF_ALU+BPF_MUL+BPF_K",$2);}
-		| DIV Value	{MKINS($$,"BPF_ALU+BPF_DIV+BPF_K",$2);}
-		| AND Value	{MKINS($$,"BPF_ALU+BPF_AND+BPF_K",$2);}
-		| ORA Value	{MKINS($$,"BPF_ALU+BPF_ORA+BPF_K",$2);}
-		| LSH Value	{MKINS($$,"BPF_ALU+BPF_LSH+BPF_K",$2);}
-		| RSH Value	{MKINS($$,"BPF_ALU+BPF_RSH+BPF_K",$2);}
+Alu:		ADD		{$$=mkins("BPF_ALU+BPF_ADD+BPF_X",NULL);}
+		| SUB		{$$=mkins("BPF_ALU+BPF_SUB+BPF_X",NULL);}
+		| MUL		{$$=mkins("BPF_ALU+BPF_MUL+BPF_X",NULL);}
+		| DIV		{$$=mkins("BPF_ALU+BPF_DIV+BPF_X",NULL);}
+		| AND		{$$=mkins("BPF_ALU+BPF_AND+BPF_X",NULL);}
+		| ORA		{$$=mkins("BPF_ALU+BPF_ORA+BPF_X",NULL);}
+		| LSH		{$$=mkins("BPF_ALU+BPF_LSH+BPF_X",NULL);}
+		| RSH		{$$=mkins("BPF_ALU+BPF_RSH+BPF_X",NULL);}
+		| NEG		{$$=mkins("BPF_ALU+BPF_NEG",NULL);}
+		| ADD Value	{$$=mkins("BPF_ALU+BPF_ADD+BPF_K",$2);}
+		| SUB Value	{$$=mkins("BPF_ALU+BPF_SUB+BPF_K",$2);}
+		| MUL Value	{$$=mkins("BPF_ALU+BPF_MUL+BPF_K",$2);}
+		| DIV Value	{$$=mkins("BPF_ALU+BPF_DIV+BPF_K",$2);}
+		| AND Value	{$$=mkins("BPF_ALU+BPF_AND+BPF_K",$2);}
+		| ORA Value	{$$=mkins("BPF_ALU+BPF_ORA+BPF_K",$2);}
+		| LSH Value	{$$=mkins("BPF_ALU+BPF_LSH+BPF_K",$2);}
+		| RSH Value	{$$=mkins("BPF_ALU+BPF_RSH+BPF_K",$2);}
 		;
 
 %%
