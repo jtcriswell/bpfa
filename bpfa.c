@@ -232,6 +232,7 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
     switch (p->instType)
     {
       case statement:
+      case jump:
 				fprintf (file, "\tBPF_STMT(%s, %s),\n", p->opcode,
 				         (p->operand ? p->operand : "0"));
 				break;
@@ -474,6 +475,30 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 				fprintf (stderr, "Invalid label %s\n",
 				         inp->operand);
 				fprintins (stderr, inp);
+				allResolved = 0;
+				continue;
+			}
+
+			/*
+			 * Ensure that the correct type of symbol is used for this
+			 * instruction.  Unconditional jumps should use
+			 * instruction labels while loads and stores to memory
+			 * should use memory labels defined by the VAR directive.
+			 */
+			if ((inp->instType == statement) && (sym->type == symInst))
+			{
+				fprintf (stderr,
+				         "Error: Memory access using instruction label %s\n",
+								 inp->operand);
+				allResolved = 0;
+				continue;
+			}
+
+			if ((inp->instType == jump) && (sym->type == symMemory))
+			{
+				fprintf (stderr,
+				         "Error: Jump access using memory label %s\n",
+								 inp->operand);
 				allResolved = 0;
 				continue;
 			}

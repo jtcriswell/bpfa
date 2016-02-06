@@ -47,8 +47,9 @@ extern C {
  * Options:
  *  statement - The instruction is a regular instruction.
  *  branch    - The instruction is a conditional branch instruction.
+ *  jump      - The instruction is a unconditional jump instruction.
  */
-enum instType {statement, branch};
+enum instType {statement, branch, jump};
 
 /*
  * Structure: Instruction
@@ -159,6 +160,40 @@ mkbr (char * op, char * value, char * true_branch, char * false_branch)
 
 	return p;
 }
+
+/*
+ * Function: mkjmp()
+ *
+ * Description:
+ *	This function allocates and initializes a jump instruction.  It is
+ *	mainly used to save screen real-estate in the Yacc source code.
+ *
+ * Inputs:
+ *  op    - A pointer to a string representing the opcode of the instruction.
+ *  value - A pointer to a string representing the operand of the instruction.
+ *
+ * Return value:
+ *  NULL - No new instruction could be allocated.
+ *  Otherwise, a pointer to the newly allocated instruction is returned.
+ */
+static inline struct instruction *
+mkjmp (char * op, char * value)
+{
+	/* Pointer to the new instruction */
+	struct instruction * p;
+
+	/*
+	 * Allocate a new instruction.
+	 */
+	p = mkins (op, value);
+	if (p)
+	{
+		p->instType = jump;
+	}
+
+	return p;
+}
+
 
 #ifdef _cplusplus
 };

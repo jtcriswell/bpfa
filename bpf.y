@@ -123,7 +123,7 @@ Store:		STA Label		{$$=mkins("BPF_ST",$2);}
 		| STX Label		{$$=mkins("BPF_STX",$2);}
 		;
 
-Branch:		JMP Label		{$$=mkins("BPF_JMP+BPF_JA",$2);}
+Branch:		JMP Label		{$$=mkjmp("BPF_JMP+BPF_JA",$2);}
 		| BGT Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGT+BPF_K",$2, $3, $4);}
 		| BGE Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_K",$2, $3, $4);}
 		| BLT Value Label Label	{$$=mkbr("BPF_JMP+BPF_JGE+BPF_K",$2, $4, $3);}
