@@ -412,6 +412,33 @@ create_symbol_table (struct instruction * code)
 }
 
 /*
+ * Function: needToResolve()
+ *
+ * Description:
+ *  Determine if the specified string is a symbol that needs to be resolved.
+ *
+ * Inputs:
+ *	label - The label to check.  It can be NULL.
+ *
+ * Return values:
+ *  0 - The symbol does not need to be resolved.
+ *  1 - The symbol needs to be resolved.
+ */
+static inline unsigned char
+needToResolve (char * label)
+{
+	/*
+	 * If the label is NULL, has a zero length, or isn't a symbol,
+	 * then it does not need resolution.  Symbols start with a percent sign.
+	 */
+	if ((label == NULL) || ((strlen (label)) == 0) || (label[0] != '%'))
+	{
+		return 0;
+	}
+	return 1;
+}
+
+/*
  * Function: resolve_symbols()
  *
  * Description:
@@ -454,17 +481,9 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 	for (inp = program; inp != NULL; index++, inp=inp->next)
 	{
 		/*
-		 * If there is no symbol to look up, then go to the next
-		 * iteration of the loop.
+		 * Resolve the symbol in the instruction's operand if necessary.
 		 */
-		if ((inp->operand == NULL) ||
-		    (!strlen (inp->operand)) ||
-        ((strcmp (inp->opcode, "VAR")) == 0) ||
-		    (inp->operand[0] != '%'))
-		{
-			;
-		}
-		else
+		if ((needToResolve (inp->operand)) && (strcmp (inp->opcode, "VAR")))
 		{
 			/*
 			 * Find the offset of the symbol from the beginning of
@@ -514,13 +533,10 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
         sprintf (inp->operand,"%d",sym->symoffset);
 		}
 
-		if ((inp->true_branch == NULL) ||
-		    (!strlen (inp->true_branch)) ||
-		    (inp->true_branch[0] != '%'))
-		{
-			;
-		}
-		else
+		/*
+		 * Resolve the symbol in a branch's true branch.
+		 */
+		if (needToResolve (inp->true_branch))
 		{
 			/*
 			 * Find the offset of the symbol from the beginning of
@@ -542,13 +558,10 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 			sprintf (inp->true_branch,"%d",sym->symoffset - index);
 		}
 
-		if ((inp->false_branch == NULL) ||
-		    (!strlen (inp->false_branch)) ||
-		    (inp->false_branch[0] != '%'))
-		{
-			;
-		}
-		else
+		/*
+		 * Resolve the symbol in a branch's false branch.
+		 */
+		if (needToResolve (inp->false_branch))
 		{
 			/*
 			 * Find the offset of the symbol from the beginning of
