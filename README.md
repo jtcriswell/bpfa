@@ -32,8 +32,20 @@ How do I compile it?
 
 Run the "make" program to compile the code.
 
+How do I run the BPF Assembler?
+-------------------------------
+Run the bpfa program to run the assembler. The file containing the BPF
+assembler code input should be specified on the command line.  The output will
+be written to standard output by default:
+
+% ./bpfa file.bpf
+
+The -o option can be used to specify an output file:
+
+% ./bpfa -o file.h file.bpf
+
 What is the instruction set?
------------------------------
+----------------------------
 Instructions to the assembler begin with an optional label, an opcode, and zero
 or more operands.  Labels begin with a percent sign (%) and either define the
 location of an instruction or a location in the scratch memory.  Comments begin
