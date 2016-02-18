@@ -17,14 +17,20 @@ The BPF Assembler has had rudimentary testing on Mac OS X, Linux, and
 (a very long time ago) on MkLinux on PowerPC.  It should compile and run
 on any UNIX like operating system with little/no effort.
 
-Note that there are dependencies on Flex, Bison, and Make.  Any such
-dependencies should be minimal.
+Note that you will need GNU Flex, GNU Bison, and Make to compile the code.
+The Makefile does not use GNU Make extensions, so it should work with most
+versions of Make.
 
 Where can I get it?
 -------------------
 The BPF Assembler can be downloaded from Github at the following URL:
 
 https://github.com/jtcriswell/bpfa
+
+How do I compile it?
+--------------------
+
+Run the "make" program to compile the code.
 
 What is the instruction set?
 -----------------------------
