@@ -37,11 +37,11 @@ Run the bpfa program to run the assembler. The file containing the BPF
 assembler code input should be specified on the command line.  The output will
 be written to standard output by default:
 
-  % ./bpfa file.bpf
+	% ./bpfa file.bpf
 
 The -o option can be used to specify an output file:
 
-  % ./bpfa -o file.h file.bpf
+	% ./bpfa -o file.h file.bpf
 
 What is the instruction set?
 ----------------------------
@@ -87,41 +87,41 @@ take memory location labels as arguments.
 
 Loads
 -----
-  LDA  <Label> - Load Accumulator with word from memory.
-  LDAI <Value> - Load Accumulator with immediate value.
-  LDAB <Value> - Load Accumulator with byte from packet.
-  LDAH <Value> - Load Accumulator with halfword from packet.
-  LDAW <Value> - Load Accumulator with word from packet.
-  LDAL         - Load Accumulator with packet's length.
+	LDA  <Label> - Load Accumulator with word from memory.
+	LDAI <Value> - Load Accumulator with immediate value.
+	LDAB <Value> - Load Accumulator with byte from packet.
+	LDAH <Value> - Load Accumulator with halfword from packet.
+	LDAW <Value> - Load Accumulator with word from packet.
+	LDAL         - Load Accumulator with packet's length.
 
-  LDAH, LDAH, and LDAW may also be used with X register indexing:
+	LDAH, LDAH, and LDAW may also be used with X register indexing:
 
-  LDAH <Value>,X
+	LDAH <Value>,X
 
-  LDX   <Label> - Load X Register with word from memory.
-  LDXI  <Value> - Load X Register with immediate value.
-  LDXL          - Load X Register with packet's length.
-  LDXIPV4LEN    - Load X Register with length of IPv4 header.
+	LDX   <Label> - Load X Register with word from memory.
+	LDXI  <Value> - Load X Register with immediate value.
+	LDXL          - Load X Register with packet's length.
+	LDXIPV4LEN    - Load X Register with length of IPv4 header.
 
 Stores
 ------
-  STA <Label> - Store Accumulator word in memory.
-  STX <Label> - Store X Register word in memory.
+	STA <Label> - Store Accumulator word in memory.
+	STX <Label> - Store X Register word in memory.
 
 Transfers
 ---------
-  TXA - Transfer X register to Accumulator.
-  TAX - Transfer Accumulator to X register.
+	TXA - Transfer X register to Accumulator.
+	TAX - Transfer Accumulator to X register.
 
 Arithmetic
 ----------
 Arithmetic operations (except NEG) are of the form:
 
-  <optional label> <opcode>
+	<optional label> <opcode>
 
 or
 
-  <optional label> <opcode> <Value>
+	<optional label> <opcode> <Value>
 
 The first form uses the value in the X Register as the operand.  The second
 form uses the specified constant as the operand.  All results are placed in the
@@ -129,25 +129,25 @@ Accumulator.
 
 The NEG opcode has no operand.
 
-  ADD - Add.
-  SUB - Subtract.
-  MUL - Multiply.
-  DIV - Divide.
-  AND - Bitwise AND.
-  ORA - Bitwise OR.
-  LSH - Left Shift.
-  RSH - Right Shift.
-  NEG - Negate Accumulator.
+	ADD - Add.
+	SUB - Subtract.
+	MUL - Multiply.
+	DIV - Divide.
+	AND - Bitwise AND.
+	ORA - Bitwise OR.
+	LSH - Left Shift.
+	RSH - Right Shift.
+	NEG - Negate Accumulator.
 
 Jumps
 -----
-  JMP <label> - Jump to label.
+	JMP <label> - Jump to label.
 
 Branches
 --------
 All branches are of the form:
 
-  [optional label] <opcode> <Value> <true label> [false label]
+	[optional label] <opcode> <Value> <true label> [false label]
 
 The first form compares the Accumulator against a constant.  The second form
 compares the Accumulator against the X register.
@@ -160,20 +160,20 @@ Note that some of these operations are actually pseudo-ops; the BPF assembler
 will arrange the true/false destinations and pick an actual BPF opcode to
 represent the branch.
 
-  BGT   - Branch if greater than.
-  BGE   - Branch if greater than or equal to.
-  BLT   - Branch if less than.
-  BLE   - Branch if less than or equal to.
-  BEQ   - Branch if equal.
-  BNE   - Branch if not equal.
-  BSET  - Branch if Accumulator has bits set that are set in the compared value.
-  BNSET - Branch if Accumulator does not have bits set that are set in the
-          compared value.
+	BGT   - Branch if greater than.
+	BGE   - Branch if greater than or equal to.
+	BLT   - Branch if less than.
+	BLE   - Branch if less than or equal to.
+	BEQ   - Branch if equal.
+	BNE   - Branch if not equal.
+	BSET  - Branch if Accumulator has bits set that are set in the compared value.
+	BNSET - Branch if Accumulator does not have bits set that are set in the
+					compared value.
 
 Return
 ------
-  RET         - Exit, returning the value in the accumulator.
-  RET <Value> - Exit, returning the specified value.
+	RET         - Exit, returning the value in the accumulator.
+	RET <Value> - Exit, returning the specified value.
 
 Are there any example programs?
 -------------------------------
