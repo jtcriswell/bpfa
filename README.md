@@ -154,6 +154,10 @@ All branches are of the form:
 
 	[optional label] <opcode> <Value> <true label> [false label]
 
+or    
+
+	[optional label] <opcode> <true label> [false label]    
+
 The first form compares the Accumulator against a constant.  The second form
 compares the Accumulator against the X register.
 
