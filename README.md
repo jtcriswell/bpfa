@@ -87,6 +87,9 @@ take memory location labels as arguments.
 
 Loads
 -----
+
+The accumlator register may be loaded using the following instructions:
+
 	LDA  <Label> - Load Accumulator with word from memory.
 	LDAI <Value> - Load Accumulator with immediate value.
 	LDAB <Value> - Load Accumulator with byte from packet.
@@ -94,9 +97,11 @@ Loads
 	LDAW <Value> - Load Accumulator with word from packet.
 	LDAL         - Load Accumulator with packet's length.
 
-	LDAH, LDAH, and LDAW may also be used with X register indexing:
+LDAH, LDAH, and LDAW may also be used with X register indexing:
 
 	LDAH <Value>,X
+
+The index register (X) may be loaded using the following instructions:
 
 	LDX   <Label> - Load X Register with word from memory.
 	LDXI  <Value> - Load X Register with immediate value.
