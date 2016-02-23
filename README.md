@@ -77,7 +77,7 @@ following overview should make things a little easier to understand:
 
 Memory
 ------
-The keyword VAR create a label that denotes a location within the scratch
+The keyword VAR creates a label that denotes a location within the scratch
 memory.  The following directive reserves a memory location with the label
 %port:
 
