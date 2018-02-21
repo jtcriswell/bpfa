@@ -310,9 +310,9 @@ create_symbol_table (struct instruction * code)
 	 */
 	for (p=inslist; p != NULL; p=p->next)
 	{
-    /*
-     * A symbol is either a label or a newly declared variable.
-     */
+		/*
+		 * A symbol is either a label or a newly declared variable.
+		 */
 		if ((p->label != NULL) || ((strcmp (p->opcode, "VAR")) == 0))
 		{
 			labelcount++;
@@ -343,16 +343,16 @@ create_symbol_table (struct instruction * code)
 	 */
 	for (offset=0, p=inslist; p != NULL; offset++, p=p->next)
 	{
-    /*
-     * If this instruction has a label, then add that label to the symbol
-     * table.
-     */
+		/*
+		 * If this instruction has a label, then add that label to the
+		 * symbol table.
+		 */
 		if (p->label != NULL)
 		{
 			/*
-			 * Check to see if this symbol is already in the symbol table.  If it
-			 * is, then there is a duplicate symbol error that we should report to
-			 * the user.
+			 * Check to see if this symbol is already in the symbol
+			 * table.  If it is, then there is a duplicate symbol
+			 * error that we should report to the user.
 			 */
 			for (unsigned checkIndex = 0; checkIndex < index; ++checkIndex)
 			{
@@ -371,21 +371,22 @@ create_symbol_table (struct instruction * code)
 			symtable->symbols[index].symoffset = offset;
 
 			/*
-			 * Advance the index to the next available symbol in the array.
+			 * Advance the index to the next available symbol in
+			 * the array.
 			 */
 			index++;
 		}
 
 		/*
-     * If this instruction declares a label for a memory location, create
-     * a memory label for the location.
-     */
+		 * If this instruction declares a label for a memory location,
+		 * create a memory label for the location.
+		 */
 		if ((strcmp (p->opcode, "VAR")) == 0)
 		{
 			/*
-			 * Check to see if this symbol is already in the symbol table.  If it
-			 * is, then there is a duplicate symbol error that we should report to
-			 * the user.
+			 * Check to see if this symbol is already in the symbol
+			 * table.  If it is, then there is a duplicate symbol
+			 * error that we should report to the user.
 			 */
 			for (unsigned checkIndex = 0; checkIndex < index; ++checkIndex)
 			{
@@ -526,12 +527,12 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 			/*
 			 * Determine the distance to be covered and place it
 			 * into the instruction if it is a label.  Otherwise,
-       * use the memory location within the symbol.
+			 * use the memory location within the symbol.
 			 */
-      if (sym->type == symInst)
-        sprintf (inp->operand,"%d",sym->symoffset - index);
-      else
-        sprintf (inp->operand,"%d",sym->symoffset);
+			if (sym->type == symInst)
+				sprintf (inp->operand,"%d",sym->symoffset - index);
+			else
+				sprintf (inp->operand,"%d",sym->symoffset);
 		}
 
 		/*
@@ -592,7 +593,7 @@ resolve_symbols (struct instruction * program, struct symtable * symtable)
 			/*
 			 * Ensure that the symbol refers to an instruction label.
 			 */
-      if (sym->type == symMemory)
+			if (sym->type == symMemory)
 			{
 				fprintf (stderr,
 				         "Error: Conditional branch using memory label %s\n",
