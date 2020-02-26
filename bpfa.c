@@ -239,7 +239,8 @@ genprogram (FILE * file, char * progname, struct instruction * inslist)
 				break;
 
       case branch:
-				fprintf (file, "\tBPF_JUMP(%s, %s, %s, %s),\n", p->opcode, p->operand,
+				fprintf (file, "\tBPF_JUMP(%s, %s, %s, %s),\n", p->opcode,
+				         (p->operand ? p->operand : "0"),
 				         p->true_branch, p->false_branch);
 				break;
 		}
